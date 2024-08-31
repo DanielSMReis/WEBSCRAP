@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "webscrap"
+version = "0.1.0"
+description = "scrapping de dados do sistema GETs"
+authors = ["Daniel Maia Reis"]
+license = "OpenSource"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+selenium = "^4.23.1"
+openpyxl = "^3.1.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

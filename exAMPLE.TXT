@@ -1,0 +1,38 @@
+Python
+
+import os
+import shutil
+import glob
+
+def move_last_downloaded_file(download_folder, destination_folder):
+    # Encontra todos os arquivos .xls na pasta de downloads
+    list_of_files = glob.glob(os.path.join(download_folder, '*.xls'))
+    
+    # Verifica se há arquivos na lista
+    if not list_of_files:
+        print("Nenhum arquivo .xls encontrado na pasta de downloads.")
+        return
+    
+    # Encontra o arquivo mais recente
+    latest_file = max(list_of_files, key=os.path.getctime)
+    
+    # Move o arquivo para a pasta de destino
+    shutil.move(latest_file, destination_folder)
+    print(f"Arquivo {os.path.basename(latest_file)} movido para {destination_folder}")
+
+# Exemplo de uso
+download_folder = '/caminho/para/pasta/de/downloads'
+destination_folder = '/caminho/para/pasta/de/destino'
+
+move_last_downloaded_file(download_folder, destination_folder)
+Código gerado por IA. Examine e use com cuidado. Mais informações em perguntas frequentes.
+Explicação:
+Importações: Importamos os módulos necessários (os, shutil e glob).
+Função move_last_downloaded_file:
+glob.glob: Encontra todos os arquivos .xls na pasta de downloads.
+max: Encontra o arquivo mais recente com base no tempo de criação (os.path.getctime).
+shutil.move: Move o arquivo mais recente para a pasta de destino.
+Uso da função: Definimos os caminhos das pastas de downloads e de destino e chamamos a função.
+Como usar:
+Substitua '/caminho/para/pasta/de/downloads' e '/caminho/para/pasta/de/destino' pelos caminhos reais das suas pastas.
+Execute o script sempre que precisar mover o último arquivo .xls baixado.
