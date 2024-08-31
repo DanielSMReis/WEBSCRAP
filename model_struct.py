@@ -113,3 +113,55 @@ class GETSU:
             btn_gerar_planilha.click()
             btn_baixar = ff.find_element(By.XPATH, "/html/body/div[3]/div[2]/form/div[4]/div/div/p[1]/button[1]/span[2]")
             btn_baixar.click()
+
+
+    def transfer_download(self,choice1, choice2):
+        # Obtém o caminho da pasta de downloads do usuário
+        download_folder = os.path.join(os.path.expanduser('~'), 'Downloads')
+        destination_folder = os.path.join(download_folder, 'scraping_indicadores')
+
+        # Cria a pasta de destino se ela não existir
+        if not os.path.exists(destination_folder):
+            os.makedirs(destination_folder)
+
+        # Encontra todos os arquivos .xls na pasta de downloads
+        list_of_files = glob.glob(os.path.join(download_folder, '*.xls'))
+        
+        # Verifica se há arquivos na lista
+        if not list_of_files:
+            print("Nenhum arquivo .xls encontrado na pasta de downloads.")
+            return
+        
+        # Encontra o arquivo mais recente
+        latest_file = max(list_of_files, key=os.path.getctime)
+        
+        # Captura o nome do arquivo
+        file_name = os.path.basename(latest_file)
+        
+        # Renomeia a variável de acordo com os parâmetros de entrada
+        if choice1 == '1':
+            first_part = 'corretivas'
+        elif choice1 == '2':
+            first_part = 'programadas'
+        else:
+            print("Escolha inválida para o primeiro parâmetro. Use 1 para corretivas ou 2 para programadas.")
+            return
+        
+        if choice2 == '1':
+            second_part = 'abertas'
+        elif choice2 == '2':
+            second_part = 'fechadas'
+        else:
+            print("Escolha inválida para o segundo parâmetro. Use 1 para abertas ou 2 para fechadas.")
+            return
+        
+        new_file_name = f'planilha_{first_part}_{second_part}.xls'
+        
+        # Define o caminho completo do novo arquivo
+        new_file_path = os.path.join(destination_folder, new_file_name)
+        
+        # Move e renomeia o arquivo para a pasta de destino
+        shutil.move(latest_file, new_file_path)
+        print(f"Arquivo {file_name} movido e renomeado para {new_file_name} na pasta {destination_folder}")
+
+        return new_file_name

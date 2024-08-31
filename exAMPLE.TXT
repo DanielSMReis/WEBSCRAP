@@ -36,3 +36,18 @@ Uso da função: Definimos os caminhos das pastas de downloads e de destino e ch
 Como usar:
 Substitua '/caminho/para/pasta/de/downloads' e '/caminho/para/pasta/de/destino' pelos caminhos reais das suas pastas.
 Execute o script sempre que precisar mover o último arquivo .xls baixado.
+
+
+def delete_file(file_path):
+    try:
+        os.remove(file_path)
+        print(f"Arquivo {os.path.basename(file_path)} deletado com sucesso.")
+    except FileNotFoundError:
+        print(f"Arquivo {os.path.basename(file_path)} não encontrado.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar deletar o arquivo: {e}")
+
+# Exemplo de uso
+destination_folder = '/caminho/para/pasta/de/destino'
+file_name = 'nome_do_arquivo.xls'  # Substitua pelo nome do arquivo que foi movido
+file_path = os.path.join(destination_folder, file_name)

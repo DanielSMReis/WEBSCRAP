@@ -22,11 +22,13 @@ elif choice == '2':
     driver = webdriver.Firefox()
     perfil_engenheiro = GETSU(driver)
     perfil_engenheiro.inicialize_engenheiro()
-   # perfil_engenheiro.ir_para('os')
-   # perfil_engenheiro.gerar_planilha_abertas(driver,choice3)
-    
+    perfil_engenheiro.ir_para('os')
+    perfil_engenheiro.gerar_planilha_abertas(driver,choice3)
+
+    planilha_abertas = perfil_engenheiro.transfer_download(choice3,'1')
     #salvar na pasta para manipulação
     
-    time.sleep(2)
+    time.sleep(1)
     perfil_engenheiro.ir_para('os_encerradas')
     perfil_engenheiro.gerar_planilha_fechadas(driver,choice3)
+    planilha_fechadas = perfil_engenheiro.transfer_download(choice3,'2')
