@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-import time, os, shutil, glob 
+import time, os, shutil, glob, xlrd
 
 class GETSU:
     def __init__(self, driver):
@@ -59,10 +59,6 @@ class GETSU:
 
         btndia1 = ff.find_element(By.XPATH,"/html/body/div[13]/table/tbody/tr[1]/td[5]/a")
         btndia1.click()
-
-
-        time.sleep(1)
-
 
         btnclasse_da_os = ff.find_element(By.XPATH, "/html/body/div[3]/div[2]/form/div[2]/div[1]/div/table/tbody/tr[6]/td[2]/div/div[3]/span")
         
@@ -165,3 +161,31 @@ class GETSU:
         print(f"Arquivo {file_name} movido e renomeado para {new_file_name} na pasta {destination_folder}")
 
         return new_file_name
+
+
+
+
+class automate_planilha:
+    def __init__(self, file_name):
+        # Constrói o caminho completo para o arquivo na pasta "scraping_indicadores" dentro de "Downloads"
+        downloads_folder = os.path.join(os.environ['USERPROFILE'], 'Downloads', 'scraping_indicadores')
+        self.file_path = os.path.join(downloads_folder, file_name)
+        
+        self.workbook = xlrd.open_workbook(self.file_path)
+        self.sheet = self.workbook.sheet_by_index(0)
+
+    def count_items_in_column(self, start_cell):
+        # Extrai a coluna e a linha inicial da célula de início
+        start_col = ord(start_cell[0].upper()) - ord('A')
+        start_row = int(start_cell[1:]) - 1
+        
+        # Inicializa o contador
+        count = 0
+        
+        # Itera pelas células na coluna, começando da linha inicial
+        for row in range(start_row, self.sheet.nrows):
+            cell_value = self.sheet.cell_value(row, start_col)
+            if cell_value:
+                count += 1
+        
+        return count
