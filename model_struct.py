@@ -1,7 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-import time, os, shutil, glob, xlrd
+import time, os, shutil, glob, xlrd, sys
+import tkinter as tk
 
 class GETSU:
     def __init__(self, driver):
@@ -22,11 +23,6 @@ class GETSU:
         self.driver.get(self.url)  # instancia do selenium
     
 
-    # loga com perfil de usuario tecnico
-    def inicialize_tecnico(self):
-        self.navigate()
-        self.logar_tecnico()
-
     def inicialize_engenheiro(self):
         self.navigate()
         self.logar_engenheiro()
@@ -37,12 +33,6 @@ class GETSU:
             self.driver.get(self.links[acao])
         else:
             print("Ação inválida. Tente novamente.")
-
-
-    def logar_tecnico(self, username='daniel.reis@ebserh.gov.br', password='Desktop1'):
-        self.driver.find_element(By.NAME, self.bar_username).send_keys(username)
-        self.driver.find_element(By.NAME, self.bar_password).send_keys(password)
-        self.driver.find_element(By.XPATH, "//input[@value='Entrar']").click()
 
 
     def logar_engenheiro(self, username='victor.bomfim@ebserh.gov.br', password='251712victor'):
@@ -99,6 +89,8 @@ class GETSU:
             btn_gerar_planilha.click()
             btn_baixar = ff.find_element(By.XPATH, "/html/body/div[3]/div[2]/form/div[4]/div/div/p[1]/button[1]/span[2]")
             btn_baixar.click()
+            btn_fechar = ff.find_element(By.XPATH, "/html/body/div[3]/div[2]/form/div[4]/div/div/p[1]/button[2]/span")
+            btn_fechar.click()
 
         elif(choice == '2'):
             btn_classe_da_os.click()
@@ -189,3 +181,47 @@ class automate_planilha:
                 count += 1
         
         return count
+    
+
+
+
+class RedirectText(object):
+    def __init__(self, widget):
+        self.widget = widget
+
+    def write(self, string):
+        self.widget.insert(tk.END, string)
+        self.widget.see(tk.END)
+
+class InterfaceIndicadores:
+    def __init__(self, root, main_func):
+        self.root = root
+        self.root.title("Gerador de Indicadores")
+        self.main_func = main_func
+
+        # Cria um widget de texto
+        self.text_widget = tk.Text(root, height=30, width=60)
+        self.text_widget.pack(pady=20)
+
+        # Redireciona a saída padrão do print para o widget de texto
+        sys.stdout = RedirectText(self.text_widget)
+
+        # Cria um rótulo com o texto desejado
+        self.label = tk.Label(root, text="Clique para gerar os indicadores de preventiva e corretiva")
+        self.label.pack(pady=10)
+
+        # Cria um botão
+        self.button = tk.Button(root, text="Clique aqui", command=self.on_button_click)
+        self.button.pack(pady=20)
+
+    def on_button_click(self):
+        valor = '1'
+        print("Powered by Daniel Maia.\n\n")
+        
+        self.main_func(valor)
+
+# Função para iniciar a interface
+def iniciar_interface(main_func):
+    root = tk.Tk()
+    interface = InterfaceIndicadores(root, main_func)
+    root.mainloop()
